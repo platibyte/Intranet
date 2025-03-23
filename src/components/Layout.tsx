@@ -32,7 +32,7 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
         <div className="container mx-auto flex justify-between items-center">
           <Link to="/" className="text-xl font-semibold tracking-tight flex items-center gap-2">
             <span className="bg-primary text-white rounded-md w-8 h-8 flex items-center justify-center">H</span>
-            Heim-Intranet
+            Familie Imhof - Intranet
           </Link>
           
           {/* Desktop Navigation */}
@@ -99,7 +99,7 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
       
       <footer className="glass-panel py-4 mt-auto">
         <div className="container mx-auto text-center text-sm text-muted-foreground">
-          <p>Heim-Intranet &copy; {new Date().getFullYear()} - Alle Rechte vorbehalten</p>
+          <p>Familie Imhof - Intranet &copy; {new Date().getFullYear()} - Alle Rechte vorbehalten</p>
         </div>
       </footer>
     </div>
