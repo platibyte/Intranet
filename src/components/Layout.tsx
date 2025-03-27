@@ -1,7 +1,7 @@
 
 import React, { useState, useEffect } from 'react';
 import { Link, useLocation } from 'react-router-dom';
-import { Home, Image, Info, Menu, X } from 'lucide-react';
+import { Home, Image, Info, Menu, X, Calendar } from 'lucide-react';
 import { cn } from "@/lib/utils";
 
 interface LayoutProps {
@@ -23,6 +23,7 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
   const menuItems = [
     { path: '/', label: 'Startseite', icon: Home },
     { path: '/photos', label: 'Fotos', icon: Image },
+    { path: '/calendar', label: 'Kalender', icon: Calendar },
     { path: '/info', label: 'Informationen', icon: Info },
   ];
 

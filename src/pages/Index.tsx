@@ -3,6 +3,7 @@ import React from 'react';
 import Layout from '@/components/Layout';
 import PhotoGallery from '@/components/PhotoGallery';
 import GoogleWidget from '@/components/GoogleWidget';
+import RandomPhoto from '@/RandomPhoto';
 import { ArrowRight, Home, Info, Network, Wifi } from 'lucide-react';
 import { Link } from 'react-router-dom';
 
@@ -25,7 +26,7 @@ const Index = () => {
               <ArrowRight size={16} className="ml-1" />
             </Link>
           </div>
-          <PhotoGallery limit={6} compact />
+          <RandomPhoto />
         </div>
         
         <div className="glass-panel rounded-xl p-6 animate-slide-in" style={{ animationDelay: '0.2s' }}>
