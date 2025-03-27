@@ -1,4 +1,3 @@
-
 import { useState, useEffect } from 'react';
 import { Button } from "@/components/ui/button";
 import { RefreshCw, X } from 'lucide-react';
@@ -10,7 +9,7 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog";
-import { useToast } from "@/components/ui/toast";
+import { useToast } from "@/hooks/use-toast";
 
 function RandomPhoto() {
   const [photos, setPhotos] = useState<string[]>([]);
@@ -19,13 +18,10 @@ function RandomPhoto() {
   const [blacklist, setBlacklist] = useState<Record<string, number>>({});
   const { toast } = useToast();
 
-  // Funktion zum Abrufen von 6 zufälligen Fotos
   const fetchRandomPhotos = async () => {
     setLoading(true);
     try {
-      // Zuerst alle Fotos abrufen
       const fetchPromises = Array(10).fill(0).map(async () => {
-        // Füge einen zufälligen Parameter hinzu, um das Caching zu verhindern
         const cacheBuster = `?nocache=${Date.now()}-${Math.random()}`;
         const response = await fetch(`http://localhost:5000/api/random-photo${cacheBuster}`);
         if (response.ok) {
@@ -38,15 +34,12 @@ function RandomPhoto() {
       const allResults = await Promise.all(fetchPromises);
       const validResults = allResults.filter(url => url !== null) as string[];
       
-      // Fotos nach Blacklist filtern
       const filteredResults = validResults.filter(url => {
-        // Zufällig entscheiden, basierend auf dem Blacklist-Wert
         const blacklistValue = blacklist[url] || 0;
         const randomValue = Math.random();
         return randomValue >= blacklistValue;
       });
       
-      // Die ersten 6 Fotos nehmen oder weniger, falls nicht genug verfügbar
       setPhotos(filteredResults.slice(0, 6));
     } catch (error) {
       console.error('Fehler:', error);
@@ -55,10 +48,8 @@ function RandomPhoto() {
     }
   };
 
-  // Funktion zum Ersetzen eines einzelnen Fotos
   const replaceSinglePhoto = async (indexToReplace: number) => {
     try {
-      // Neue Fotos abrufen, bis wir eines finden, das nicht in der aktuellen Anzeige ist
       let newPhotoUrl = null;
       let attempts = 0;
       
@@ -69,11 +60,9 @@ function RandomPhoto() {
           const blob = await response.blob();
           const url = URL.createObjectURL(blob);
           
-          // Prüfen, ob das Foto bereits angezeigt wird
           if (!photos.includes(url)) {
             newPhotoUrl = url;
           } else {
-            // Wenn das Foto bereits angezeigt wird, URL freigeben
             URL.revokeObjectURL(url);
           }
         }
@@ -81,13 +70,11 @@ function RandomPhoto() {
       }
       
       if (newPhotoUrl) {
-        // Das alte Foto aus dem DOM entfernen und URL freigeben
         const oldUrl = photos[indexToReplace];
         if (oldUrl) {
           URL.revokeObjectURL(oldUrl);
         }
         
-        // Das neue Foto an der gleichen Position einfügen
         const newPhotos = [...photos];
         newPhotos[indexToReplace] = newPhotoUrl;
         setPhotos(newPhotos);
@@ -97,11 +84,9 @@ function RandomPhoto() {
     }
   };
 
-  // Beim Laden Fotos abrufen
   useEffect(() => {
     fetchRandomPhotos();
     
-    // Bereinigung der Objekt-URLs beim Entladen der Komponente
     return () => {
       photos.forEach(url => URL.revokeObjectURL(url));
     };
@@ -112,16 +97,13 @@ function RandomPhoto() {
   };
 
   const handleHidePhoto = (photoUrl: string, index: number) => {
-    // Foto zum Blacklist hinzufügen oder Wahrscheinlichkeit erhöhen
     setBlacklist(prev => ({
       ...prev,
-      [photoUrl]: 0.75 // Reduziert die Wahrscheinlichkeit um 75%
+      [photoUrl]: 0.75
     }));
     
-    // Foto sofort ersetzen
     replaceSinglePhoto(index);
     
-    // Benachrichtigung anzeigen
     toast({
       title: "Foto ausgeblendet",
       description: "Dieses Foto wird seltener angezeigt.",
@@ -154,7 +136,7 @@ function RandomPhoto() {
               />
               <button
                 onClick={(e) => {
-                  e.stopPropagation(); // Verhindert, dass das Bild geöffnet wird
+                  e.stopPropagation();
                   handleHidePhoto(photoUrl, index);
                 }}
                 className="absolute top-2 right-2 bg-black/60 text-white rounded-full p-1 opacity-0 group-hover:opacity-100 transition-opacity"
@@ -186,7 +168,6 @@ function RandomPhoto() {
         </Button>
       </div>
 
-      {/* Dialog für die vergrößerte Ansicht */}
       {selectedPhoto && (
         <Dialog open={!!selectedPhoto} onOpenChange={(open) => !open && setSelectedPhoto(null)}>
           <DialogContent className="max-w-4xl">
