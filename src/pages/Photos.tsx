@@ -1,10 +1,12 @@
 
-import React from 'react';
+import React, { useState } from 'react';
 import Layout from '@/components/Layout';
 import PhotoGallery from '@/components/PhotoGallery';
 import { Camera } from 'lucide-react';
 
 const Photos = () => {
+  const [currentPage, setCurrentPage] = useState(1);
+  
   return (
     <Layout>
       <div className="mb-8 flex flex-col md:flex-row md:items-end justify-between gap-4 animate-fade-in">
@@ -33,7 +35,7 @@ const Photos = () => {
       </div>
       
       <div className="glass-panel rounded-xl p-6 mb-12 animate-scale-in">
-        <PhotoGallery />
+        <PhotoGallery currentPage={currentPage} onPageChange={setCurrentPage} />
       </div>
       
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6 animate-slide-in" style={{ animationDelay: '0.2s' }}>

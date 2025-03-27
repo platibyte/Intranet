@@ -1,3 +1,4 @@
+
 import { useState, useEffect } from 'react';
 import { Button } from "@/components/ui/button";
 import { RefreshCw, X } from 'lucide-react';
@@ -11,10 +12,15 @@ import {
 } from "@/components/ui/dialog";
 import { useToast } from "@/hooks/use-toast";
 
+interface PhotoInfo {
+  url: string;
+  filename: string;
+}
+
 function RandomPhoto() {
-  const [photos, setPhotos] = useState<string[]>([]);
+  const [photos, setPhotos] = useState<PhotoInfo[]>([]);
   const [loading, setLoading] = useState(true);
-  const [selectedPhoto, setSelectedPhoto] = useState<string | null>(null);
+  const [selectedPhoto, setSelectedPhoto] = useState<PhotoInfo | null>(null);
   const [blacklist, setBlacklist] = useState<Record<string, number>>({});
   const { toast } = useToast();
 
@@ -26,16 +32,42 @@ function RandomPhoto() {
         const response = await fetch(`http://localhost:5000/api/random-photo${cacheBuster}`);
         if (response.ok) {
           const blob = await response.blob();
-          return URL.createObjectURL(blob);
+          const url = URL.createObjectURL(blob);
+          
+          // Get filename from headers or generate one if not available
+          const contentDisposition = response.headers.get('content-disposition');
+          let filename = '';
+          
+          if (contentDisposition) {
+            const filenameMatch = contentDisposition.match(/filename="(.+)"/);
+            if (filenameMatch && filenameMatch[1]) {
+              filename = filenameMatch[1];
+            }
+          }
+          
+          // If no filename found, extract it from the URL or use a default
+          if (!filename) {
+            // Try to get filename from the URL path
+            const urlPath = new URL(response.url).pathname;
+            const urlFilename = urlPath.split('/').pop();
+            
+            if (urlFilename) {
+              filename = urlFilename.split('?')[0]; // Remove query parameters
+            } else {
+              filename = `photo-${Date.now()}.jpg`;
+            }
+          }
+          
+          return { url, filename };
         }
         return null;
       });
 
       const allResults = await Promise.all(fetchPromises);
-      const validResults = allResults.filter(url => url !== null) as string[];
+      const validResults = allResults.filter(item => item !== null) as PhotoInfo[];
       
-      const filteredResults = validResults.filter(url => {
-        const blacklistValue = blacklist[url] || 0;
+      const filteredResults = validResults.filter(item => {
+        const blacklistValue = blacklist[item.url] || 0;
         const randomValue = Math.random();
         return randomValue >= blacklistValue;
       });
@@ -50,18 +82,42 @@ function RandomPhoto() {
 
   const replaceSinglePhoto = async (indexToReplace: number) => {
     try {
-      let newPhotoUrl = null;
+      let newPhotoInfo = null;
       let attempts = 0;
       
-      while (!newPhotoUrl && attempts < 5) {
+      while (!newPhotoInfo && attempts < 5) {
         const cacheBuster = `?nocache=${Date.now()}-${Math.random()}`;
         const response = await fetch(`http://localhost:5000/api/random-photo${cacheBuster}`);
         if (response.ok) {
           const blob = await response.blob();
           const url = URL.createObjectURL(blob);
           
-          if (!photos.includes(url)) {
-            newPhotoUrl = url;
+          // Get filename from headers or generate one if not available
+          const contentDisposition = response.headers.get('content-disposition');
+          let filename = '';
+          
+          if (contentDisposition) {
+            const filenameMatch = contentDisposition.match(/filename="(.+)"/);
+            if (filenameMatch && filenameMatch[1]) {
+              filename = filenameMatch[1];
+            }
+          }
+          
+          // If no filename found, extract it from the URL or use a default
+          if (!filename) {
+            // Try to get filename from the URL path
+            const urlPath = new URL(response.url).pathname;
+            const urlFilename = urlPath.split('/').pop();
+            
+            if (urlFilename) {
+              filename = urlFilename.split('?')[0]; // Remove query parameters
+            } else {
+              filename = `photo-${Date.now()}.jpg`;
+            }
+          }
+          
+          if (!photos.some(photo => photo.url === url)) {
+            newPhotoInfo = { url, filename };
           } else {
             URL.revokeObjectURL(url);
           }
@@ -69,14 +125,14 @@ function RandomPhoto() {
         attempts++;
       }
       
-      if (newPhotoUrl) {
-        const oldUrl = photos[indexToReplace];
+      if (newPhotoInfo) {
+        const oldUrl = photos[indexToReplace]?.url;
         if (oldUrl) {
           URL.revokeObjectURL(oldUrl);
         }
         
         const newPhotos = [...photos];
-        newPhotos[indexToReplace] = newPhotoUrl;
+        newPhotos[indexToReplace] = newPhotoInfo;
         setPhotos(newPhotos);
       }
     } catch (error) {
@@ -88,18 +144,18 @@ function RandomPhoto() {
     fetchRandomPhotos();
     
     return () => {
-      photos.forEach(url => URL.revokeObjectURL(url));
+      photos.forEach(photo => URL.revokeObjectURL(photo.url));
     };
   }, []);
 
-  const handleOpenPhoto = (photoUrl: string) => {
-    setSelectedPhoto(photoUrl);
+  const handleOpenPhoto = (photo: PhotoInfo) => {
+    setSelectedPhoto(photo);
   };
 
-  const handleHidePhoto = (photoUrl: string, index: number) => {
+  const handleHidePhoto = (photo: PhotoInfo, index: number) => {
     setBlacklist(prev => ({
       ...prev,
-      [photoUrl]: 0.75
+      [photo.url]: 0.75
     }));
     
     replaceSinglePhoto(index);
@@ -123,21 +179,21 @@ function RandomPhoto() {
         </div>
       ) : photos.length > 0 ? (
         <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
-          {photos.map((photoUrl, index) => (
+          {photos.map((photo, index) => (
             <div 
               key={index} 
               className="relative aspect-video rounded-lg overflow-hidden bg-secondary/50 group"
             >
               <img 
-                src={photoUrl} 
+                src={photo.url} 
                 alt={`Zufälliges Foto ${index + 1}`} 
                 className="w-full h-full object-cover cursor-pointer hover:opacity-90 transition-opacity"
-                onClick={() => handleOpenPhoto(photoUrl)}
+                onClick={() => handleOpenPhoto(photo)}
               />
               <button
                 onClick={(e) => {
                   e.stopPropagation();
-                  handleHidePhoto(photoUrl, index);
+                  handleHidePhoto(photo, index);
                 }}
                 className="absolute top-2 right-2 bg-black/60 text-white rounded-full p-1 opacity-0 group-hover:opacity-100 transition-opacity"
                 title="Nicht mehr anzeigen"
@@ -156,7 +212,7 @@ function RandomPhoto() {
       <div className="flex justify-end">
         <Button 
           onClick={() => {
-            photos.forEach(url => URL.revokeObjectURL(url));
+            photos.forEach(photo => URL.revokeObjectURL(photo.url));
             fetchRandomPhotos();
           }} 
           variant="outline" 
@@ -172,15 +228,15 @@ function RandomPhoto() {
         <Dialog open={!!selectedPhoto} onOpenChange={(open) => !open && setSelectedPhoto(null)}>
           <DialogContent className="max-w-4xl">
             <DialogHeader>
-              <DialogTitle>Foto-Ansicht</DialogTitle>
+              <DialogTitle>{selectedPhoto.filename}</DialogTitle>
               <DialogDescription>
                 Vergrößerte Darstellung des ausgewählten Fotos
               </DialogDescription>
             </DialogHeader>
             <div className="flex items-center justify-center p-2">
               <img 
-                src={selectedPhoto} 
-                alt="Vergrößertes Foto" 
+                src={selectedPhoto.url} 
+                alt={selectedPhoto.filename} 
                 className="max-h-[70vh] object-contain rounded-md"
               />
             </div>
