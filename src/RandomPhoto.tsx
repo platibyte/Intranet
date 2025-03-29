@@ -190,6 +190,9 @@ function RandomPhoto() {
                 className="w-full h-full object-cover cursor-pointer hover:opacity-90 transition-opacity"
                 onClick={() => handleOpenPhoto(photo)}
               />
+              <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent flex flex-col justify-end p-4 opacity-0 hover:opacity-100 transition-opacity duration-300">
+                <h3 className="text-white font-medium text-sm">{photo.filename}</h3>
+              </div>
               <button
                 onClick={(e) => {
                   e.stopPropagation();
@@ -230,7 +233,7 @@ function RandomPhoto() {
             <DialogHeader>
               <DialogTitle>{selectedPhoto.filename}</DialogTitle>
               <DialogDescription>
-                Vergrößerte Darstellung des ausgewählten Fotos
+                Vergrößerte Darstellung des Fotos
               </DialogDescription>
             </DialogHeader>
             <div className="flex items-center justify-center p-2">
