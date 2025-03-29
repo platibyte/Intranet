@@ -38,7 +38,7 @@ const PhotoGallery: React.FC<PhotoGalleryProps> = ({
   const [loading, setLoading] = useState(true);
   const [totalPages, setTotalPages] = useState(1);
   const [page, setPage] = useState(currentPage);
-  const photosPerPage = limit || 30;
+  const photosPerPage = limit || 8;
   const { toast } = useToast();
   
   const fetchPhotos = async () => {
