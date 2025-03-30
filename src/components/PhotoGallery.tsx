@@ -94,7 +94,7 @@ const PhotoGallery: React.FC<PhotoGalleryProps> = ({
         setTotalPages(1);
       } else {
         // Fetch real photos from backend with pagination
-        const response = await fetch(`http://localhost:5000/api/photos?page=${page}&limit=${photosPerPage}`);
+        const response = await fetch(`http://192.168.0.17:5000/api/photos?page=${page}&limit=${photosPerPage}`);
         
         if (!response.ok) {
           throw new Error('Fehler beim Laden der Fotos');
@@ -105,7 +105,7 @@ const PhotoGallery: React.FC<PhotoGalleryProps> = ({
         // Transform the data to match our Photo interface
         const transformedPhotos: Photo[] = data.photos.map((photo: any, index: number) => ({
           id: index + 1 + (page - 1) * photosPerPage,
-          src: `http://localhost:5000${photo.url}`,
+          src: `http://192.168.0.17:5000${photo.url}`,
           title: photo.title || photo.filename,
           filename: photo.filename,
           description: photo.description || ''
