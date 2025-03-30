@@ -169,7 +169,7 @@ function RandomPhoto() {
   return (
     <div className="space-y-4">
       {loading ? (
-        <div className="grid grid-cols-2 md:grid-cols-3 gap-4 aspect-video">
+        <div className="grid grid-cols-2 md:grid-cols-4 gap-4 aspect-video">
           {Array(6).fill(0).map((_, index) => (
             <div key={index} className="bg-secondary/50 rounded-lg flex items-center justify-center">
               <div className="animate-spin h-6 w-6 border-2 border-primary border-t-transparent rounded-full"></div>
@@ -177,7 +177,7 @@ function RandomPhoto() {
           ))}
         </div>
       ) : photos.length > 0 ? (
-        <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
+        <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
           {photos.map((photo, index) => (
             <div 
               key={index} 
