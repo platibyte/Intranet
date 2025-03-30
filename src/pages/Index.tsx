@@ -25,9 +25,12 @@ const Index = () => {
           <RandomPhoto />
         </div>
         
+        <div className="col-span-1 glass-panel rounded-xl p-6 animate-slide-in" style={{ animationDelay: '0.2s' }}>
+          <h2 className="text-2xl font-semibold mb-4">Google Suche</h2>
+          <GoogleWidget type="search" height="400px" />
+        </div>
       </div>
       
-
     </Layout>
   );
 };
