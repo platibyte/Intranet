@@ -71,7 +71,7 @@ function RandomPhoto() {
         return randomValue >= blacklistValue;
       });
       
-      setPhotos(filteredResults.slice(0, 6));
+      setPhotos(filteredResults.slice(0, 8));
     } catch (error) {
       console.error('Fehler:', error);
     } finally {
