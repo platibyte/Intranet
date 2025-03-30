@@ -24,7 +24,6 @@ function RandomPhoto() {
   const [photos, setPhotos] = useState<PhotoInfo[]>([]);
   const [loading, setLoading] = useState(true);
   const [selectedPhoto, setSelectedPhoto] = useState<PhotoInfo | null>(null);
-  const [dialogOpen, setDialogOpen] = useState(false);
   const [blacklist, setBlacklist] = useState<Record<string, number>>({});
   const [serverError, setServerError] = useState<string | null>(null);
   const { toast } = useToast();
@@ -46,6 +45,7 @@ function RandomPhoto() {
           const blob = await response.blob();
           const url = URL.createObjectURL(blob);
           
+          // Get filename from headers or generate one if not available
           const contentDisposition = response.headers.get('content-disposition');
           let filename = '';
           
@@ -56,12 +56,14 @@ function RandomPhoto() {
             }
           }
           
+          // If no filename found, extract it from the URL or use a default
           if (!filename) {
+            // Try to get filename from the URL path
             const urlPath = new URL(response.url).pathname;
             const urlFilename = urlPath.split('/').pop();
             
             if (urlFilename) {
-              filename = urlFilename.split('?')[0];
+              filename = urlFilename.split('?')[0]; // Remove query parameters
             } else {
               filename = `photo-${Date.now()}.jpg`;
             }
@@ -106,6 +108,7 @@ function RandomPhoto() {
           const blob = await response.blob();
           const url = URL.createObjectURL(blob);
           
+          // Get filename from headers or generate one if not available
           const contentDisposition = response.headers.get('content-disposition');
           let filename = '';
           
@@ -116,12 +119,14 @@ function RandomPhoto() {
             }
           }
           
+          // If no filename found, extract it from the URL or use a default
           if (!filename) {
+            // Try to get filename from the URL path
             const urlPath = new URL(response.url).pathname;
             const urlFilename = urlPath.split('/').pop();
             
             if (urlFilename) {
-              filename = urlFilename.split('?')[0];
+              filename = urlFilename.split('?')[0]; // Remove query parameters
             } else {
               filename = `photo-${Date.now()}.jpg`;
             }
@@ -161,12 +166,6 @@ function RandomPhoto() {
 
   const handleOpenPhoto = (photo: PhotoInfo) => {
     setSelectedPhoto(photo);
-    setDialogOpen(true);
-  };
-  
-  const handleCloseDialog = () => {
-    setDialogOpen(false);
-    setTimeout(() => setSelectedPhoto(null), 300);
   };
 
   const handleHidePhoto = (photo: PhotoInfo, index: number) => {
@@ -251,27 +250,25 @@ function RandomPhoto() {
         </Button>
       </div>
 
-      <Dialog open={dialogOpen} onOpenChange={setDialogOpen}>
-        <DialogContent className="max-w-4xl">
-          {selectedPhoto && (
-            <>
-              <DialogHeader>
-                <DialogTitle>{selectedPhoto.filename}</DialogTitle>
-                <DialogDescription>
-                  Vergrößerte Darstellung des Fotos
-                </DialogDescription>
-              </DialogHeader>
-              <div className="flex items-center justify-center p-2">
-                <img 
-                  src={selectedPhoto.url} 
-                  alt={selectedPhoto.filename} 
-                  className="max-h-[70vh] object-contain rounded-md"
-                />
-              </div>
-            </>
-          )}
-        </DialogContent>
-      </Dialog>
+      {selectedPhoto && (
+        <Dialog open={!!selectedPhoto} onOpenChange={(open) => !open && setSelectedPhoto(null)}>
+          <DialogContent className="max-w-4xl">
+            <DialogHeader>
+              <DialogTitle>{selectedPhoto.filename}</DialogTitle>
+              <DialogDescription>
+                Vergrößerte Darstellung des Fotos
+              </DialogDescription>
+            </DialogHeader>
+            <div className="flex items-center justify-center p-2">
+              <img 
+                src={selectedPhoto.url} 
+                alt={selectedPhoto.filename} 
+                className="max-h-[70vh] object-contain rounded-md"
+              />
+            </div>
+          </DialogContent>
+        </Dialog>
+      )}
     </div>
   );
 }
