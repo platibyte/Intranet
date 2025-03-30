@@ -1,46 +1,34 @@
-
 import { useState, useEffect } from 'react';
 import { Button } from "@/components/ui/button";
-import { RefreshCw, X, AlertCircle } from 'lucide-react';
+import { RefreshCw, X } from 'lucide-react';
 import {
   Dialog,
   DialogContent,
   DialogDescription,
   DialogHeader,
   DialogTitle,
+  DialogTrigger,
 } from "@/components/ui/dialog";
 import { useToast } from "@/hooks/use-toast";
-import { Alert, AlertDescription } from "@/components/ui/alert";
 
 interface PhotoInfo {
   url: string;
   filename: string;
 }
 
-// We can adjust this if the server is running on a different host
-const API_BASE_URL = import.meta.env.VITE_API_URL || 'http://localhost:5000';
-
 function RandomPhoto() {
   const [photos, setPhotos] = useState<PhotoInfo[]>([]);
   const [loading, setLoading] = useState(true);
   const [selectedPhoto, setSelectedPhoto] = useState<PhotoInfo | null>(null);
   const [blacklist, setBlacklist] = useState<Record<string, number>>({});
-  const [serverError, setServerError] = useState<string | null>(null);
   const { toast } = useToast();
 
   const fetchRandomPhotos = async () => {
     setLoading(true);
-    setServerError(null);
     try {
       const fetchPromises = Array(10).fill(0).map(async () => {
         const cacheBuster = `?nocache=${Date.now()}-${Math.random()}`;
-        const response = await fetch(`${API_BASE_URL}/api/random-photo${cacheBuster}`, {
-          mode: 'cors',
-          credentials: 'omit',
-          headers: {
-            'Cache-Control': 'no-cache',
-          }
-        });
+        const response = await fetch(`http://localhost:5000/api/random-photo${cacheBuster}`);
         if (response.ok) {
           const blob = await response.blob();
           const url = URL.createObjectURL(blob);
@@ -77,10 +65,6 @@ function RandomPhoto() {
       const allResults = await Promise.all(fetchPromises);
       const validResults = allResults.filter(item => item !== null) as PhotoInfo[];
       
-      if (validResults.length === 0) {
-        setServerError("Keine Fotos konnten geladen werden. Bitte stellen Sie sicher, dass der Foto-Server läuft.");
-      }
-      
       const filteredResults = validResults.filter(item => {
         const blacklistValue = blacklist[item.url] || 0;
         const randomValue = Math.random();
@@ -89,8 +73,7 @@ function RandomPhoto() {
       
       setPhotos(filteredResults.slice(0, 6));
     } catch (error) {
-      console.error('Fehler beim Laden der Fotos:', error);
-      setServerError("Verbindung zum Foto-Server fehlgeschlagen. Bitte stellen Sie sicher, dass er läuft und erreichbar ist.");
+      console.error('Fehler:', error);
     } finally {
       setLoading(false);
     }
@@ -160,7 +143,7 @@ function RandomPhoto() {
     fetchRandomPhotos();
     
     return () => {
-      photos.forEach(photo => URL.createObjectURL && URL.revokeObjectURL(photo.url));
+      photos.forEach(photo => URL.revokeObjectURL(photo.url));
     };
   }, []);
 
@@ -185,13 +168,6 @@ function RandomPhoto() {
 
   return (
     <div className="space-y-4">
-      {serverError ? (
-        <Alert variant="destructive" className="mb-4">
-          <AlertCircle className="h-4 w-4" />
-          <AlertDescription>{serverError}</AlertDescription>
-        </Alert>
-      ) : null}
-      
       {loading ? (
         <div className="grid grid-cols-2 md:grid-cols-3 gap-4 aspect-video">
           {Array(6).fill(0).map((_, index) => (
@@ -238,7 +214,7 @@ function RandomPhoto() {
       <div className="flex justify-end">
         <Button 
           onClick={() => {
-            photos.forEach(photo => URL.createObjectURL && URL.revokeObjectURL(photo.url));
+            photos.forEach(photo => URL.revokeObjectURL(photo.url));
             fetchRandomPhotos();
           }} 
           variant="outline" 
