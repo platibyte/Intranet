@@ -200,6 +200,7 @@ const Info = () => {
               <tr>
                 <th className="text-left p-3 font-medium">Name</th>
                 <th className="text-left p-3 font-medium">Typenbezeichnung</th>
+                <th className="text-left p-3 font-medium">Beschreibung</th>
                 <th className="text-left p-3 font-medium">Wo/Wer</th>
                 <th className="text-left p-3 font-medium">IP-Adresse</th>
               </tr>
@@ -208,89 +209,104 @@ const Info = () => {
               <tr className="border-b border-border/50">
                 <td className="p-3">Router</td>
                 <td className="p-3">Internet-Box2</td>
+                <td className="p-3"></td>
                 <td className="p-3">Swisscom</td>
                 <td className="p-3 font-mono">192.168.0.254</td>
               </tr>
               <tr className="border-b border-border/50">
                 <td className="p-3">Drucker</td>
                 <td className="p-3">Canon MF650C</td>
+                <td className="p-3"></td>
                 <td className="p-3">Daniela</td>
                 <td className="p-3 font-mono">192.168.0.100</td>
               </tr>
               <tr className="border-b border-border/50">
                 <td className="p-3">SCP1711</td>
                 <td className="p-3">Captiva R59-825</td>
+                <td className="p-3">grosser PC</td>
                 <td className="p-3">Tobias</td>
                 <td className="p-3 font-mono">192.168.0.26</td>
               </tr>
               <tr className="border-b border-border/50">
                 <td className="p-3">SCP1711smol</td>
                 <td className="p-3">Joule Performance Arex RTX 3070</td>
+                <td className="p-3">Notebook für Uni</td>
                 <td className="p-3">Tobias</td>
                 <td className="p-3 font-mono">192.168.0.23</td>
               </tr>
               <tr>
                 <td className="p-3">SCP0212</td>
                 <td className="p-3">ASUS ROG Strix G17</td>
+                <td className="p-3">Notebook</td>
                 <td className="p-3">Daniela</td>
                 <td className="p-3 font-mono">192.168.0.21</td>
               </tr>
               <tr>
                 <td className="p-3">Simons Laptop</td>
                 <td className="p-3">DELL Latitude E6230</td>
+                <td className="p-3">Notebook</td>
                 <td className="p-3">Simon</td>
                 <td className="p-3 font-mono">unbekannt</td>
               </tr>
               <tr>
                 <td className="p-3">Convertible Laptop-2NMMPVVK</td>
                 <td className="p-3">Lenovo Ideapad D330</td>
+                <td className="p-3">Notebook</td>
                 <td className="p-3">Tobias</td>
                 <td className="p-3 font-mono">192.168.0.20</td>
               </tr>
               <tr>
                 <td className="p-3">Raspberry Pi 5</td>
                 <td className="p-3">Raspberry Pi 5</td>
+                <td className="p-3"></td>
                 <td className="p-3">Tobias</td>
                 <td className="p-3 font-mono">192.168.0.17</td>
               </tr>
               <tr>
                 <td className="p-3">Chromecast</td>
                 <td className="p-3">Google Chromecast mit TV 4k (Google Assistant)</td>
+                <td className="p-3"></td>
                 <td className="p-3">Tobias</td>
                 <td className="p-3 font-mono">unbekannt</td>
               </tr>
               <tr>
                 <td className="p-3">Wingo TV-Box</td>
                 <td className="p-3">TV-Box</td>
+                <td className="p-3"></td>
                 <td className="p-3">Swisscom</td>
                 <td className="p-3 font-mono">192.168.0.10</td>
               </tr>
               <tr>
                 <td className="p-3">TV</td>
                 <td className="p-3">Panasonic Viera</td>
+                <td className="p-3"></td>
                 <td className="p-3">Tobias</td>
                 <td className="p-3 font-mono">unbekannt</td>
               </tr>
               <tr>
                 <td className="p-3">Sony Xperia XQ-ES54</td>
                 <td className="p-3">Xperia 10 VI</td>
+                <td className="p-3">Handy</td>
                 <td className="p-3">Tobias</td>
                 <td className="p-3 font-mono">192.168.0.12</td>
               </tr>
               <tr>
                 <td className="p-3">Samsung Galaxy</td>
                 <td className="p-3">Galaxy S21 FE 5G</td>
+                <td className="p-3">Handy</td>
                 <td className="p-3">Daniela</td>
                 <td className="p-3 font-mono">192.168.0.13</td>
               </tr>
               <tr>
                 <td className="p-3">Nintendo Switch Simon</td>
                 <td className="p-3"></td>
+                <td className="p-3"></td>
                 <td className="p-3">Simon</td>
                 <td className="p-3 font-mono">192.168.0.14</td>
               </tr>
               <tr>
                 <td className="p-3">Nintendo Switch Dominik</td>
+                <td className="p-3"></td>
                 <td className="p-3"></td>
                 <td className="p-3">Dominik</td>
                 <td className="p-3 font-mono">192.168.0.15</td>
