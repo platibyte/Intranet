@@ -28,7 +28,7 @@ function RandomPhoto() {
     try {
       const fetchPromises = Array(10).fill(0).map(async () => {
         const cacheBuster = `?nocache=${Date.now()}-${Math.random()}`;
-        const response = await fetch(`http://192.168.0.17:5000/api/random-photo${cacheBuster}`);
+        const response = await fetch(`http://localhost:5000/api/random-photo${cacheBuster}`);
         if (response.ok) {
           const blob = await response.blob();
           const url = URL.createObjectURL(blob);
@@ -86,7 +86,7 @@ function RandomPhoto() {
       
       while (!newPhotoInfo && attempts < 5) {
         const cacheBuster = `?nocache=${Date.now()}-${Math.random()}`;
-        const response = await fetch(`http://192.168.0.17:5000/api/random-photo${cacheBuster}`);
+        const response = await fetch(`http://localhost:5000/api/random-photo${cacheBuster}`);
         if (response.ok) {
           const blob = await response.blob();
           const url = URL.createObjectURL(blob);
