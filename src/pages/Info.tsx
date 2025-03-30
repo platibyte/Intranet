@@ -36,9 +36,30 @@ const Info = () => {
                   </a>
                 </li>
                 <li>
-                  <a href="https://moodle.org" target="_blank" rel="noopener noreferrer"
+                  <a href="https://anton.app" target="_blank" rel="noopener noreferrer"
                      className="flex items-center p-2 hover:bg-background rounded-lg transition">
-                    <span className="flex-1">Moodle</span>
+                    <span className="flex-1">Anton</span>
+                    <ExternalLink size={16} />
+                  </a>
+                </li>
+                <li>
+                  <a href="https://antolin.westmann.de" target="_blank" rel="noopener noreferrer"
+                     className="flex items-center p-2 hover:bg-background rounded-lg transition">
+                    <span className="flex-1">Antolin</span>
+                    <ExternalLink size={16} />
+                  </a>
+                </li>
+                <li>
+                  <a href="https://web.schabi.ch" target="_blank" rel="noopener noreferrer"
+                     className="flex items-center p-2 hover:bg-background rounded-lg transition">
+                    <span className="flex-1">Schabi</span>
+                    <ExternalLink size={16} />
+                  </a>
+                </li>
+                <li>
+                  <a href="https://digital.lmvz.ch" target="_blank" rel="noopener noreferrer"
+                     className="flex items-center p-2 hover:bg-background rounded-lg transition">
+                    <span className="flex-1">LMVZ</span>
                     <ExternalLink size={16} />
                   </a>
                 </li>
@@ -178,68 +199,100 @@ const Info = () => {
             <thead className="bg-secondary/80 border-b border-border">
               <tr>
                 <th className="text-left p-3 font-medium">Name</th>
+                <th className="text-left p-3 font-medium">Typenbezeichnung</th>
+                <th className="text-left p-3 font-medium">Wo/Wer</th>
                 <th className="text-left p-3 font-medium">IP-Adresse</th>
               </tr>
             </thead>
             <tbody>
               <tr className="border-b border-border/50">
                 <td className="p-3">Router</td>
+                <td className="p-3">Internet-Box2</td>
+                <td className="p-3">Swisscom</td>
                 <td className="p-3 font-mono">192.168.0.254</td>
               </tr>
               <tr className="border-b border-border/50">
-                <td className="p-3">Canon Drucker MF650C</td>
+                <td className="p-3">Drucker</td>
+                <td className="p-3">Canon MF650C</td>
+                <td className="p-3">Daniela</td>
                 <td className="p-3 font-mono">192.168.0.100</td>
               </tr>
               <tr className="border-b border-border/50">
                 <td className="p-3">SCP1711</td>
+                <td className="p-3">Captiva R59-825</td>
+                <td className="p-3">Tobias</td>
                 <td className="p-3 font-mono">192.168.0.26</td>
               </tr>
               <tr className="border-b border-border/50">
                 <td className="p-3">SCP1711smol</td>
+                <td className="p-3">Joule Performance Arex RTX 3070</td>
+                <td className="p-3">Tobias</td>
                 <td className="p-3 font-mono">192.168.0.23</td>
               </tr>
               <tr>
                 <td className="p-3">SCP0212</td>
+                <td className="p-3">ASUS ROG Strix G17</td>
+                <td className="p-3">Daniela</td>
                 <td className="p-3 font-mono">192.168.0.21</td>
               </tr>
               <tr>
                 <td className="p-3">Simons Laptop</td>
+                <td className="p-3">DELL Latitude E6230</td>
+                <td className="p-3">Simon</td>
                 <td className="p-3 font-mono">unbekannt</td>
               </tr>
               <tr>
                 <td className="p-3">Convertible Laptop-2NMMPVVK</td>
+                <td className="p-3">Lenovo Ideapad D330</td>
+                <td className="p-3">Tobias</td>
                 <td className="p-3 font-mono">192.168.0.20</td>
               </tr>
               <tr>
                 <td className="p-3">Raspberry Pi 5</td>
+                <td className="p-3">Raspberry Pi 5</td>
+                <td className="p-3">Tobias</td>
                 <td className="p-3 font-mono">192.168.0.17</td>
               </tr>
               <tr>
                 <td className="p-3">Chromecast</td>
+                <td className="p-3">Google Chromecast mit TV 4k (Google Assistant)</td>
+                <td className="p-3">Tobias</td>
                 <td className="p-3 font-mono">unbekannt</td>
               </tr>
               <tr>
                 <td className="p-3">Wingo TV-Box</td>
+                <td className="p-3">TV-Box</td>
+                <td className="p-3">Swisscom</td>
                 <td className="p-3 font-mono">192.168.0.10</td>
               </tr>
               <tr>
                 <td className="p-3">TV</td>
+                <td className="p-3">Panasonic Viera</td>
+                <td className="p-3">Tobias</td>
                 <td className="p-3 font-mono">unbekannt</td>
               </tr>
               <tr>
                 <td className="p-3">Sony Xperia XQ-ES54</td>
+                <td className="p-3">Xperia 10 VI</td>
+                <td className="p-3">Tobias</td>
                 <td className="p-3 font-mono">192.168.0.12</td>
               </tr>
               <tr>
                 <td className="p-3">Samsung Galaxy</td>
+                <td className="p-3">Galaxy S21 FE 5G</td>
+                <td className="p-3">Daniela</td>
                 <td className="p-3 font-mono">192.168.0.13</td>
               </tr>
               <tr>
                 <td className="p-3">Nintendo Switch Simon</td>
+                <td className="p-3"></td>
+                <td className="p-3">Simon</td>
                 <td className="p-3 font-mono">192.168.0.14</td>
               </tr>
               <tr>
                 <td className="p-3">Nintendo Switch Dominik</td>
+                <td className="p-3"></td>
+                <td className="p-3">Dominik</td>
                 <td className="p-3 font-mono">192.168.0.15</td>
               </tr>
             </tbody>

@@ -26,7 +26,7 @@ function RandomPhoto() {
   const fetchRandomPhotos = async () => {
     setLoading(true);
     try {
-      const fetchPromises = Array(10).fill(0).map(async () => {
+      const fetchPromises = Array(8).fill(0).map(async () => {
         const cacheBuster = `?nocache=${Date.now()}-${Math.random()}`;
         const response = await fetch(`http://192.168.0.17:5000/api/random-photo${cacheBuster}`);
         if (response.ok) {
@@ -170,7 +170,7 @@ function RandomPhoto() {
     <div className="space-y-4">
       {loading ? (
         <div className="grid grid-cols-2 md:grid-cols-4 gap-4 aspect-video">
-          {Array(6).fill(0).map((_, index) => (
+          {Array(8).fill(0).map((_, index) => (
             <div key={index} className="bg-secondary/50 rounded-lg flex items-center justify-center">
               <div className="animate-spin h-6 w-6 border-2 border-primary border-t-transparent rounded-full"></div>
             </div>
@@ -225,26 +225,6 @@ function RandomPhoto() {
           Neue Fotos
         </Button>
       </div>
-
-      {selectedPhoto && (
-        <Dialog open={!!selectedPhoto} onOpenChange={(open) => !open && setSelectedPhoto(null)}>
-          <DialogContent className="max-w-4xl">
-            <DialogHeader>
-              <DialogTitle>{selectedPhoto.filename}</DialogTitle>
-              <DialogDescription>
-                Vergrößerte Darstellung des Fotos
-              </DialogDescription>
-            </DialogHeader>
-            <div className="flex items-center justify-center p-2">
-              <img 
-                src={selectedPhoto.url} 
-                alt={selectedPhoto.filename} 
-                className="max-h-[70vh] object-contain rounded-md"
-              />
-            </div>
-          </DialogContent>
-        </Dialog>
-      )}
     </div>
   );
 }
