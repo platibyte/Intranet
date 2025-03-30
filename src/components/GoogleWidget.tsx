@@ -1,16 +1,26 @@
 
 import React, { useEffect, useRef, useState } from 'react';
 
+/**
+ * Props interface for the GoogleWidget component
+ */
 interface GoogleWidgetProps {
-  type: 'search' | 'calendar' | 'translate';
-  width?: string;
-  height?: string;
+  type: 'search' | 'calendar' | 'translate'; // Type of Google widget to display
+  width?: string;                           // Width of the widget (default: 100%)
+  height?: string;                          // Height of the widget (default: 400px)
 }
 
+/**
+ * Component that embeds various Google services as iframes
+ * Supports Google Search, Calendar, and Translate
+ */
 const GoogleWidget: React.FC<GoogleWidgetProps> = ({ type, width = '100%', height = '400px' }) => {
+  // Reference to the container div
   const containerRef = useRef<HTMLDivElement>(null);
+  // State to track if the widget has loaded
   const [loaded, setLoaded] = useState(false);
   
+  // Determine the source URL and title based on the widget type
   let src = '';
   let title = '';
   
@@ -32,16 +42,19 @@ const GoogleWidget: React.FC<GoogleWidgetProps> = ({ type, width = '100%', heigh
       title = 'Google';
   }
   
+  // Simulate loading delay for better UX
   useEffect(() => {
     const timer = setTimeout(() => {
       setLoaded(true);
     }, 800);
     
+    // Clean up the timer on component unmount
     return () => clearTimeout(timer);
   }, []);
   
   return (
     <div className="rounded-xl glass-panel overflow-hidden relative" ref={containerRef}>
+      {/* Widget container with fade-in transition when loaded */}
       <div className={`w-full ${loaded ? 'opacity-100' : 'opacity-0'} transition-opacity duration-500`} style={{ height }}>
         <iframe
           src={src}
@@ -56,6 +69,7 @@ const GoogleWidget: React.FC<GoogleWidgetProps> = ({ type, width = '100%', heigh
         ></iframe>
       </div>
       
+      {/* Loading spinner shown while the iframe is loading */}
       {!loaded && (
         <div className="absolute inset-0 flex items-center justify-center">
           <div className="flex flex-col items-center">

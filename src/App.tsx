@@ -10,13 +10,24 @@ import Info from "./pages/Info";
 import NotFound from "./pages/NotFound";
 import CalendarPage from "./pages/Calendar";
 
+// Create a new QueryClient instance for React Query
 const queryClient = new QueryClient();
 
+/**
+ * Main App component that sets up:
+ * - React Query for data fetching
+ * - TooltipProvider for tooltips
+ * - Toast notifications
+ * - Routing with react-router-dom
+ */
 const App = () => (
   <QueryClientProvider client={queryClient}>
     <TooltipProvider>
+      {/* Toast notification systems */}
       <Toaster />
       <Sonner />
+      
+      {/* Router setup with all application routes */}
       <BrowserRouter>
         <Routes>
           <Route path="/" element={<Index />} />
