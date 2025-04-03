@@ -2,9 +2,8 @@
 import React from 'react';
 import Layout from '@/components/Layout';
 import PhotoGallery from '@/components/PhotoGallery';
-import GoogleWidget from '@/components/GoogleWidget';
 import RandomPhoto from '@/RandomPhoto';
-import { ArrowRight, Home, Info, Network, Wifi } from 'lucide-react';
+import { ArrowRight } from 'lucide-react';
 import { Link } from 'react-router-dom';
 
 /**

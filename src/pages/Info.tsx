@@ -1,7 +1,6 @@
 import React from 'react';
 import Layout from '@/components/Layout';
-import GoogleWidget from '@/components/GoogleWidget';
-import { Calendar, ExternalLink, FileText, HardDrive, LinkIcon, Server, Wifi } from 'lucide-react';
+import { ExternalLink, LinkIcon } from 'lucide-react';
 
 const Info = () => {
   return (

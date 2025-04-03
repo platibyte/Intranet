@@ -2,7 +2,6 @@
 import React, { useState } from 'react';
 import Layout from '@/components/Layout';
 import PhotoGallery from '@/components/PhotoGallery';
-import { Camera } from 'lucide-react';
 
 const Photos = () => {
   const [currentPage, setCurrentPage] = useState(1);

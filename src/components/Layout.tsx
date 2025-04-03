@@ -23,7 +23,6 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
   const menuItems = [
     { path: '/', label: 'Startseite', icon: Home },
     { path: '/photos', label: 'Fotos', icon: Image },
-    { path: '/calendar', label: 'Kalender', icon: Calendar },
     { path: '/info', label: 'Informationen', icon: Info },
   ];
 
