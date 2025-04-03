@@ -8,6 +8,7 @@ import Index from "./pages/Index";
 import Photos from "./pages/Photos";
 import Info from "./pages/Info";
 import NotFound from "./pages/NotFound";
+import Plans from "./pages/Plans"
 
 // Create a new QueryClient instance for React Query
 const queryClient = new QueryClient();
@@ -32,6 +33,7 @@ const App = () => (
           <Route path="/" element={<Index />} />
           <Route path="/photos" element={<Photos />} />
           <Route path="/info" element={<Info />} />
+          <Route path="/plans" element={<Plans />} />
           {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
           <Route path="*" element={<NotFound />} />
         </Routes>

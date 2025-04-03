@@ -23,6 +23,7 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
   const menuItems = [
     { path: '/', label: 'Startseite', icon: Home },
     { path: '/photos', label: 'Fotos', icon: Image },
+    { path: '/plans', label: 'Pläne', icon: Calendar },
     { path: '/info', label: 'Informationen', icon: Info },
   ];
 
@@ -31,8 +32,8 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
       <header className="sticky top-0 z-50 glass-panel px-4 py-3">
         <div className="container mx-auto flex justify-between items-center">
           <Link to="/" className="text-xl font-semibold tracking-tight flex items-center gap-2">
-            <span className="bg-primary text-white rounded-md w-8 h-8 flex items-center justify-center">H</span>
-            Familie Imhof - Intranet
+            <span className="bg-primary text-white rounded-md w-20 h-8 flex items-center justify-center">Imhof</span>
+            Intranet
           </Link>
           
           {/* Desktop Navigation */}
