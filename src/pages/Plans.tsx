@@ -2,7 +2,12 @@ import React, { useState } from 'react';
 import Layout from '@/components/Layout';
 
 const plans = [
-    { name: 'April-Plan', file: '/pdfs/April-Plan_Test.pdf' }
+    { name: 'April-Plan', file: '/pdfs/April-Plan.pdf' },
+    { name: 'Stundenplan Simon', file: '/pdfs/Stundenplan_Simon.pdf' },
+    { name: 'Termine Simon', file: '/pdfs/Termine_Simon.pdf' },
+    { name: 'Stundenplan Dominik', file: '/pdfs/Stundenplan_Dominik.pdf' },
+    { name: 'Termine Dominik', file: '/pdfs/Termine_Dominik.pdf' },
+    { name: 'Telefonliste Dominik', file: '/pdfs/Telefonliste_Dominik.pdf' },
 ];
 
 const Plans = () => {
