@@ -44,7 +44,7 @@ function RandomPhoto() {
     setLoading(true);
     try {
       // Create 8 parallel fetch promises
-      const fetchPromises = Array(8).fill(0).map(async () => {
+      const fetchPromises = Array(4).fill(0).map(async () => {
         // Add cache buster to prevent browser caching
         const cacheBuster = `?nocache=${Date.now()}-${Math.random()}`;
         const response = await fetch(`http://192.168.0.17:5000/api/random-photo${cacheBuster}`);
@@ -225,7 +225,7 @@ function RandomPhoto() {
       {loading ? (
         // Loading state - shows skeleton placeholders
         <div className="grid grid-cols-2 md:grid-cols-4 gap-4 aspect-video">
-          {Array(8).fill(0).map((_, index) => (
+          {Array(4).fill(0).map((_, index) => (
             <div key={index} className="bg-secondary/50 rounded-lg flex items-center justify-center">
               <div className="animate-spin h-6 w-6 border-2 border-primary border-t-transparent rounded-full"></div>
             </div>
