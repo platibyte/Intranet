@@ -100,5 +100,5 @@ app.get('/api/photos', async (req, res) => {
 app.use('/photos', express.static(photoDir));
 
 app.listen(port, () => {
-  console.log(`Server läuft auf http://192.168.0.17:${port}`);
+  console.log(`Server läuft auf (localhost):${port}`);
 });

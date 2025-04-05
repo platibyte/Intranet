@@ -160,13 +160,6 @@ const Info = () => {
                   </a>
                 </li>
                 <li>
-                  <a href="http://192.168.0.17" target="_blank" rel="noopener noreferrer"
-                     className="flex items-center p-2 hover:bg-background rounded-lg transition">
-                    <span className="flex-1">Minecraft Server auf (192.168.0.17)</span>
-                    <ExternalLink size={16} />
-                  </a>
-                </li>
-                <li>
                   <a href="https://pokemonquest.fandom.com/wiki/Jynx" target="_blank" rel="noopener noreferrer"
                      className="flex items-center p-2 hover:bg-background rounded-lg transition">
                     <span className="flex-1">Pokemon Quest Wiki</span>
