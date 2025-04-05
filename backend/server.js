@@ -8,7 +8,12 @@ const cors = require('cors');
 app.use(cors());
 
 // Pfad zur externen Festplatte (anpassen!)
-const photoDir = '/home/pi/Pictures/Intranet'; // Beispielpfad, siehe unten
+const photoDir = path.join(process.env.HOME, 'Pictures/Intranet');
+
+// Heartbeat Server
+app.get('/', (req, res) => {
+  res.send('Server läuft!');
+});
 
 // API-Endpunkt für ein zufälliges Foto
 app.get('/api/random-photo', async (req, res) => {
@@ -99,6 +104,6 @@ app.get('/api/photos', async (req, res) => {
 // Statische Dateien bereitstellen
 app.use('/photos', express.static(photoDir));
 
-app.listen(port, () => {
+app.listen(port, '0.0.0.0', () => {
   console.log(`Server läuft auf (localhost):${port}`);
 });
