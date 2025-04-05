@@ -21,28 +21,28 @@ const Info = () => {
               </div>
               <ul className="space-y-2">
                 <li>
-                  <a href="https://schoolfox.app" target="_blank" rel="noopener noreferrer" 
+                  <a href="https://my.schoolfox.app/#/home" target="_blank" rel="noopener noreferrer" 
                      className="flex items-center p-2 hover:bg-background rounded-lg transition">
                     <span className="flex-1">Schoolfox.app</span>
                     <ExternalLink size={16} />
                   </a>
                 </li>
                 <li>
-                  <a href="https://famanice.de" target="_blank" rel="noopener noreferrer"
+                  <a href="https://app.famanice.de/Famanice_Desktop/" target="_blank" rel="noopener noreferrer"
                      className="flex items-center p-2 hover:bg-background rounded-lg transition">
                     <span className="flex-1">Famanice.de</span>
                     <ExternalLink size={16} />
                   </a>
                 </li>
                 <li>
-                  <a href="https://anton.app" target="_blank" rel="noopener noreferrer"
+                  <a href="https://www.anton.app/de" target="_blank" rel="noopener noreferrer"
                      className="flex items-center p-2 hover:bg-background rounded-lg transition">
                     <span className="flex-1">Anton</span>
                     <ExternalLink size={16} />
                   </a>
                 </li>
                 <li>
-                  <a href="https://antolin.westmann.de" target="_blank" rel="noopener noreferrer"
+                  <a href="https://www.antolin.westmann.de" target="_blank" rel="noopener noreferrer"
                      className="flex items-center p-2 hover:bg-background rounded-lg transition">
                     <span className="flex-1">Antolin</span>
                     <ExternalLink size={16} />
@@ -93,7 +93,7 @@ const Info = () => {
                   </a>
                 </li>
                 <li>
-                  <a href="https://gmail.com" target="_blank" rel="noopener noreferrer"
+                  <a href="https://mail.google.com/mail/" target="_blank" rel="noopener noreferrer"
                      className="flex items-center p-2 hover:bg-background rounded-lg transition">
                     <span className="flex-1">Gmail</span>
                     <ExternalLink size={16} />
@@ -123,14 +123,14 @@ const Info = () => {
                   </a>
                 </li>
                 <li>
-                  <a href="https://kiwikino.ch" target="_blank" rel="noopener noreferrer"
+                  <a href="https://www.kiwikinos.ch/" target="_blank" rel="noopener noreferrer"
                      className="flex items-center p-2 hover:bg-background rounded-lg transition">
                     <span className="flex-1">Kiwikino.ch</span>
                     <ExternalLink size={16} />
                   </a>
                 </li>
                 <li>
-                  <a href="https://www.nintendo.com/de-ch/Nintendo-eShop" target="_blank" rel="noopener noreferrer"
+                  <a href="https://www.nintendo.com/de-ch/" target="_blank" rel="noopener noreferrer"
                      className="flex items-center p-2 hover:bg-background rounded-lg transition">
                     <span className="flex-1">Nintendo eShop</span>
                     <ExternalLink size={16} />
