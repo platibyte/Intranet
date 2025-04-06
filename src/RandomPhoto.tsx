@@ -2,14 +2,6 @@
 import { useState, useEffect } from 'react';
 import { Button } from "@/components/ui/button";
 import { RefreshCw, X } from 'lucide-react';
-import {
-  Dialog,
-  DialogContent,
-  DialogDescription,
-  DialogHeader,
-  DialogTitle,
-  DialogTrigger,
-} from "@/components/ui/dialog";
 import { useToast } from "@/hooks/use-toast";
 
 /**
@@ -194,6 +186,15 @@ function RandomPhoto() {
    */
   const handleOpenPhoto = (photo: PhotoInfo) => {
     setSelectedPhoto(photo);
+    document.body.style.overflow = 'hidden'; // Prevent scrolling when modal is open
+  };
+
+  /**
+   * Closes the photo modal
+   */
+  const closePhotoModal = () => {
+    setSelectedPhoto(null);
+    document.body.style.overflow = 'auto'; // Restore scrolling
   };
 
   /**
@@ -271,6 +272,32 @@ function RandomPhoto() {
         </div>
       )}
       
+      {/* Photo Modal - only shown when a photo is selected */}
+      {selectedPhoto && (
+        <div 
+          className="fixed inset-0 z-50 bg-black/80 flex items-center justify-center p-4 animate-fade-in" 
+          onClick={closePhotoModal}
+        >
+          <div className="relative max-w-4xl w-full max-h-[90vh] animate-scale-in" onClick={e => e.stopPropagation()}>
+            <img 
+              src={selectedPhoto.url} 
+              alt={selectedPhoto.filename} 
+              className="w-full h-auto max-h-[80vh] object-contain rounded-lg"
+            />
+            <div className="glass-panel rounded-lg p-4 mt-2">
+              <h3 className="text-xl font-medium">{selectedPhoto.filename}</h3>
+            </div>
+            <button 
+              className="absolute top-4 right-4 bg-black/50 text-white p-2 rounded-full hover:bg-black/70 transition"
+              onClick={closePhotoModal}
+              aria-label="Schließen"
+            >
+              <X size={20} />
+            </button>
+          </div>
+        </div>
+      )}
+      
       {/* Refresh button */}
       <div className="flex justify-end">
         <Button 
@@ -292,3 +319,4 @@ function RandomPhoto() {
 }
 
 export default RandomPhoto;
+
