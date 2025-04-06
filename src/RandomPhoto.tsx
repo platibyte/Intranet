@@ -1,184 +1,21 @@
 
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import { Button } from "@/components/ui/button";
-import { RefreshCw, X } from 'lucide-react';
-import { useToast } from "@/hooks/use-toast";
-
-/**
- * Interface defining the structure of photo information objects
- */
-interface PhotoInfo {
-  url: string;
-  filename: string;
-}
+import { RefreshCw } from 'lucide-react';
+import { useRandomPhotos } from "@/hooks/use-random-photos";
+import { PhotoItem, PhotoInfo } from "@/components/photo/PhotoItem";
+import { PhotoModal } from "@/components/photo/PhotoModal";
+import { PhotoLoading } from "@/components/photo/PhotoLoading";
 
 /**
  * Component that displays a grid of randomly fetched photos
  * Allows users to view, refresh and hide specific photos
  */
 function RandomPhoto() {
-  // State for storing the array of photos
-  const [photos, setPhotos] = useState<PhotoInfo[]>([]);
-  // State for tracking loading status
-  const [loading, setLoading] = useState(true);
+  // Use custom hook to fetch and manage photos
+  const { photos, loading, handleHidePhoto, fetchRandomPhotos } = useRandomPhotos();
   // State for the currently selected photo (for detailed view)
   const [selectedPhoto, setSelectedPhoto] = useState<PhotoInfo | null>(null);
-  // State for tracking photos that user wants to see less frequently
-  const [blacklist, setBlacklist] = useState<Record<string, number>>({});
-  // Toast notification hook
-  const { toast } = useToast();
-
-  /**
-   * Fetches random photos from the API
-   * Creates an array of promises to fetch multiple photos in parallel
-   */
-  const fetchRandomPhotos = async () => {
-    setLoading(true);
-    try {
-      // Create 8 parallel fetch promises
-      const fetchPromises = Array(4).fill(0).map(async () => {
-        // Add cache buster to prevent browser caching
-        const cacheBuster = `?nocache=${Date.now()}-${Math.random()}`;
-        const response = await fetch(`http://192.168.0.17:5000/api/random-photo${cacheBuster}`);
-        
-        if (response.ok) {
-          // Convert response to blob and create object URL
-          const blob = await response.blob();
-          const url = URL.createObjectURL(blob);
-          
-          // Extract filename from content-disposition header if available
-          const contentDisposition = response.headers.get('content-disposition');
-          let filename = '';
-          
-          if (contentDisposition) {
-            const filenameMatch = contentDisposition.match(/filename="(.+)"/);
-            if (filenameMatch && filenameMatch[1]) {
-              filename = filenameMatch[1];
-            }
-          }
-          
-          // If no filename found in header, try to extract from URL or generate a default one
-          if (!filename) {
-            // Try to get filename from the URL path
-            const urlPath = new URL(response.url).pathname;
-            const urlFilename = urlPath.split('/').pop();
-            
-            if (urlFilename) {
-              filename = urlFilename.split('?')[0]; // Remove query parameters
-            } else {
-              filename = `photo-${Date.now()}.jpg`; // Generate default filename
-            }
-          }
-          
-          return { url, filename };
-        }
-        return null; // Return null for failed requests
-      });
-
-      // Wait for all fetch operations to complete
-      const allResults = await Promise.all(fetchPromises);
-      // Filter out null results (failed fetches)
-      const validResults = allResults.filter(item => item !== null) as PhotoInfo[];
-      
-      // Apply blacklist filter - reduce probability of showing blacklisted photos
-      const filteredResults = validResults.filter(item => {
-        const blacklistValue = blacklist[item.url] || 0;
-        const randomValue = Math.random();
-        return randomValue >= blacklistValue; // Only keep photos that pass the random threshold
-      });
-      
-      // Set maximum 8 photos to display
-      setPhotos(filteredResults.slice(0, 8));
-    } catch (error) {
-      console.error('Fehler:', error);
-    } finally {
-      setLoading(false);
-    }
-  };
-
-  /**
-   * Replaces a single photo at the specified index
-   * Used when a user chooses to hide a specific photo
-   * @param indexToReplace Index of the photo to replace
-   */
-  const replaceSinglePhoto = async (indexToReplace: number) => {
-    try {
-      let newPhotoInfo = null;
-      let attempts = 0;
-      
-      // Try up to 5 times to get a new unique photo
-      while (!newPhotoInfo && attempts < 5) {
-        // Add cache buster to prevent browser caching
-        const cacheBuster = `?nocache=${Date.now()}-${Math.random()}`;
-        const response = await fetch(`http://192.168.0.17:5000/api/random-photo${cacheBuster}`);
-        
-        if (response.ok) {
-          // Convert response to blob and create object URL
-          const blob = await response.blob();
-          const url = URL.createObjectURL(blob);
-          
-          // Extract filename from content-disposition header if available
-          const contentDisposition = response.headers.get('content-disposition');
-          let filename = '';
-          
-          if (contentDisposition) {
-            const filenameMatch = contentDisposition.match(/filename="(.+)"/);
-            if (filenameMatch && filenameMatch[1]) {
-              filename = filenameMatch[1];
-            }
-          }
-          
-          // If no filename found in header, try to extract from URL or generate a default one
-          if (!filename) {
-            // Try to get filename from the URL path
-            const urlPath = new URL(response.url).pathname;
-            const urlFilename = urlPath.split('/').pop();
-            
-            if (urlFilename) {
-              filename = urlFilename.split('?')[0]; // Remove query parameters
-            } else {
-              filename = `photo-${Date.now()}.jpg`; // Generate default filename
-            }
-          }
-          
-          // Check if the new photo is unique (not already in the list)
-          if (!photos.some(photo => photo.url === url)) {
-            newPhotoInfo = { url, filename };
-          } else {
-            // Release object URL if photo is a duplicate
-            URL.revokeObjectURL(url);
-          }
-        }
-        attempts++;
-      }
-      
-      // If a new unique photo was found, update the photos array
-      if (newPhotoInfo) {
-        // Release the object URL of the photo being replaced
-        const oldUrl = photos[indexToReplace]?.url;
-        if (oldUrl) {
-          URL.revokeObjectURL(oldUrl);
-        }
-        
-        // Create a new array with the replaced photo
-        const newPhotos = [...photos];
-        newPhotos[indexToReplace] = newPhotoInfo;
-        setPhotos(newPhotos);
-      }
-    } catch (error) {
-      console.error('Fehler beim Ersetzen des Fotos:', error);
-    }
-  };
-
-  // Fetch photos when component mounts
-  useEffect(() => {
-    fetchRandomPhotos();
-    
-    // Cleanup function to release object URLs when component unmounts
-    return () => {
-      photos.forEach(photo => URL.revokeObjectURL(photo.url));
-    };
-  }, []);
 
   /**
    * Sets the selected photo when a user clicks on it
@@ -197,72 +34,22 @@ function RandomPhoto() {
     document.body.style.overflow = 'auto'; // Restore scrolling
   };
 
-  /**
-   * Handles hiding a photo
-   * Adds it to the blacklist and replaces it with a new one
-   * @param photo The photo to hide
-   * @param index The index of the photo in the array
-   */
-  const handleHidePhoto = (photo: PhotoInfo, index: number) => {
-    // Add to blacklist with 75% chance of being filtered out
-    setBlacklist(prev => ({
-      ...prev,
-      [photo.url]: 0.75
-    }));
-    
-    // Replace the hidden photo with a new one
-    replaceSinglePhoto(index);
-    
-    // Show a toast notification
-    toast({
-      title: "Foto ausgeblendet",
-      description: "Dieses Foto wird seltener angezeigt.",
-      duration: 3000,
-    });
-  };
-
   return (
     <div className="space-y-4">
       {loading ? (
         // Loading state - shows skeleton placeholders
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-4 aspect-video">
-          {Array(4).fill(0).map((_, index) => (
-            <div key={index} className="bg-secondary/50 rounded-lg flex items-center justify-center">
-              <div className="animate-spin h-6 w-6 border-2 border-primary border-t-transparent rounded-full"></div>
-            </div>
-          ))}
-        </div>
+        <PhotoLoading />
       ) : photos.length > 0 ? (
         // Photos loaded - display the grid
         <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
           {photos.map((photo, index) => (
-            <div 
-              key={index} 
-              className="relative aspect-video rounded-lg overflow-hidden bg-secondary/50 group"
-            >
-              {/* Photo image - clickable to open the detail view */}
-              <img 
-                src={photo.url} 
-                alt={`Zufälliges Foto ${index + 1}`} 
-                className="w-full h-full object-cover cursor-pointer hover:opacity-90 transition-opacity"
-                onClick={() => handleOpenPhoto(photo)}
-              />
-              {/* Photo information overlay - appears on hover */}
-              <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent flex flex-col justify-end p-4 opacity-0 hover:opacity-100 transition-opacity duration-300">
-                <h3 className="text-white font-medium text-sm">{photo.filename}</h3>
-              </div>
-              {/* Hide button - appears on hover */}
-              <button
-                onClick={(e) => {
-                  e.stopPropagation(); // Prevent triggering the photo click
-                  handleHidePhoto(photo, index);
-                }}
-                className="absolute top-2 right-2 bg-black/60 text-white rounded-full p-1 opacity-0 group-hover:opacity-100 transition-opacity"
-                title="Nicht mehr anzeigen"
-              >
-                <X size={16} />
-              </button>
-            </div>
+            <PhotoItem 
+              key={index}
+              photo={photo}
+              index={index}
+              onOpen={handleOpenPhoto}
+              onHide={handleHidePhoto}
+            />
           ))}
         </div>
       ) : (
@@ -273,30 +60,7 @@ function RandomPhoto() {
       )}
       
       {/* Photo Modal - only shown when a photo is selected */}
-      {selectedPhoto && (
-        <div 
-          className="fixed inset-0 z-50 bg-black/80 flex items-center justify-center p-4 animate-fade-in" 
-          onClick={closePhotoModal}
-        >
-          <div className="relative max-w-4xl w-full max-h-[90vh] animate-scale-in" onClick={e => e.stopPropagation()}>
-            <img 
-              src={selectedPhoto.url} 
-              alt={selectedPhoto.filename} 
-              className="w-full h-auto max-h-[80vh] object-contain rounded-lg"
-            />
-            <div className="glass-panel rounded-lg p-4 mt-2">
-              <h3 className="text-xl font-medium">{selectedPhoto.filename}</h3>
-            </div>
-            <button 
-              className="absolute top-4 right-4 bg-black/50 text-white p-2 rounded-full hover:bg-black/70 transition"
-              onClick={closePhotoModal}
-              aria-label="Schließen"
-            >
-              <X size={20} />
-            </button>
-          </div>
-        </div>
-      )}
+      <PhotoModal photo={selectedPhoto} onClose={closePhotoModal} />
       
       {/* Refresh button */}
       <div className="flex justify-end">
@@ -319,4 +83,3 @@ function RandomPhoto() {
 }
 
 export default RandomPhoto;
-
