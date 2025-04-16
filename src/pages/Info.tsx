@@ -106,6 +106,13 @@ const Info = () => {
                     <ExternalLink size={16} />
                   </a>
                 </li>
+                <li>
+                  <a href="https://fddb.info/db/i18n/myfddb/?lang=de" target="_blank" rel="noopener noreferrer"
+                     className="flex items-center p-2 hover:bg-background rounded-lg transition">
+                    <span className="flex-1">FDDB</span>
+                    <ExternalLink size={16} />
+                  </a>
+                </li>
               </ul>
             </div>
 
