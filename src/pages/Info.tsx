@@ -62,6 +62,13 @@ const Info = () => {
                     <ExternalLink size={16} />
                   </a>
                 </li>
+                <li>
+                  <a href="https://my.winbib.ch/#/" target="_blank" rel="noopener noreferrer"
+                     className="flex items-center p-2 hover:bg-background rounded-lg transition">
+                    <span className="flex-1">Stadtbibliothek Katalogsuche</span>
+                    <ExternalLink size={16} />
+                  </a>
+                </li>
               </ul>
             </div>
             
@@ -177,6 +184,13 @@ const Info = () => {
                   <a href="https://pokequestrecipes.me/pokemon/jynx/" target="_blank" rel="noopener noreferrer"
                      className="flex items-center p-2 hover:bg-background rounded-lg transition">
                     <span className="flex-1">Pokemon Quest Rezepte</span>
+                    <ExternalLink size={16} />
+                  </a>
+                </li>
+                <li>
+                  <a href="https://pokemon.fandom.com/de/wiki/Pok%C3%A9mon_Wiki" target="_blank" rel="noopener noreferrer"
+                     className="flex items-center p-2 hover:bg-background rounded-lg transition">
+                    <span className="flex-1">Pokemon Schild Wiki</span>
                     <ExternalLink size={16} />
                   </a>
                 </li>
