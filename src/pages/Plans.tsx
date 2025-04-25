@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import Layout from '@/components/Layout';
 
 const plans = [
-    { name: 'Mai-Plan', file: '/pdfs/Mai-Plan.pdf' },
+    { name: 'Mai-Plan', file: '/pdfs/Mai-Plan 2025.pdf' },
     { name: 'April-Plan', file: '/pdfs/April-Plan.pdf' },
     { name: 'Stundenplan Simon', file: '/pdfs/Stundenplan_Simon.pdf' },
     { name: 'Termine Simon', file: '/pdfs/Termine_Simon.pdf' },
