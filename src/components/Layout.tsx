@@ -33,7 +33,7 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
         <div className="container mx-auto flex justify-between items-center">
           <Link to="/" className="text-xl font-semibold tracking-tight flex items-center gap-2">
             <span className="bg-primary text-white rounded-md w-20 h-8 flex items-center justify-center">Imhof</span>
-            Intranet
+            FamilyNet
           </Link>
           
           {/* Desktop Navigation */}

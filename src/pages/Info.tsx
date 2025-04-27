@@ -69,6 +69,27 @@ const Info = () => {
                     <ExternalLink size={16} />
                   </a>
                 </li>
+                <li>
+                  <a href="https://www.ngw.ch/junge-ngw/youngw" target="_blank" rel="noopener noreferrer"
+                     className="flex items-center p-2 hover:bg-background rounded-lg transition">
+                    <span className="flex-1">Naturwissenschaft</span>
+                    <ExternalLink size={16} />
+                  </a>
+                </li>
+                <li>
+                  <a href="https://stadt.winterthur.ch/naturmuseum" target="_blank" rel="noopener noreferrer"
+                     className="flex items-center p-2 hover:bg-background rounded-lg transition">
+                    <span className="flex-1">Naturkundemuseum</span>
+                    <ExternalLink size={16} />
+                  </a>
+                </li>
+                <li>
+                  <a href="https://stylianou.ch/" target="_blank" rel="noopener noreferrer"
+                     className="flex items-center p-2 hover:bg-background rounded-lg transition">
+                    <span className="flex-1">Stelios Stylianou</span>
+                    <ExternalLink size={16} />
+                  </a>
+                </li>
               </ul>
             </div>
             
@@ -117,6 +138,27 @@ const Info = () => {
                   <a href="https://fddb.info/db/i18n/myfddb/?lang=de" target="_blank" rel="noopener noreferrer"
                      className="flex items-center p-2 hover:bg-background rounded-lg transition">
                     <span className="flex-1">FDDB</span>
+                    <ExternalLink size={16} />
+                  </a>
+                </li>
+                <li>
+                  <a href="https://www.thingiverse.com/" target="_blank" rel="noopener noreferrer"
+                     className="flex items-center p-2 hover:bg-background rounded-lg transition">
+                    <span className="flex-1">Thingiverse</span>
+                    <ExternalLink size={16} />
+                  </a>
+                </li>
+                <li>
+                  <a href="https://www.office.com/" target="_blank" rel="noopener noreferrer"
+                     className="flex items-center p-2 hover:bg-background rounded-lg transition">
+                    <span className="flex-1">Office365</span>
+                    <ExternalLink size={16} />
+                  </a>
+                </li>
+                <li>
+                  <a href="https://dillinger.io/" target="_blank" rel="noopener noreferrer"
+                     className="flex items-center p-2 hover:bg-background rounded-lg transition">
+                    <span className="flex-1">Dillinger Markdown Editor</span>
                     <ExternalLink size={16} />
                   </a>
                 </li>
