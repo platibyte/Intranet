@@ -33,32 +33,6 @@ app.get('/api/random-photo', async (req, res) => {
   }
 });
 
-// API-Endpunkt für eine paginierte Liste von Fotos
-app.get('/api/photos', async (req, res) => {
-  try {
-    const page = parseInt(req.query.page) || 1;
-    const limit = parseInt(req.query.limit) || 8;
-    const offset = (page - 1) * limit;
-    
-    const files = await fs.readdir(photoDir);
-    const photos = files
-      .filter(file => /\.(jpg|jpeg|png|gif)$/i.test(file))
-      .map(filename => ({ filename }));
-    
-    const paginatedPhotos = photos.slice(offset, offset + limit);
-    
-    res.json({
-      photos: paginatedPhotos,
-      total: photos.length,
-      page,
-      limit
-    });
-  } catch (error) {
-    console.error(error);
-    res.status(500).json({ error: 'Fehler beim Laden der Fotos' });
-  }
-});
-
 // Statische Dateien bereitstellen
 app.use('/photos', express.static(photoDir));
 

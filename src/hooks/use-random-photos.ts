@@ -99,7 +99,11 @@ export function useRandomPhotos() {
     fetchRandomPhotos();
     
     return () => {
-      photos.forEach(photo => URL.revokeObjectURL(photo.url));
+      photos.forEach(photo => {
+        if (photo.url.startsWith('blob:')) {
+          URL.revokeObjectURL(photo.url);
+        }
+      });
     };
   }, []);
 
