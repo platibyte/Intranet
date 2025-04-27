@@ -1,3 +1,14 @@
 
 import '@testing-library/jest-dom';
-import type {} from '@testing-library/jest-dom/extend-expect';
+
+// This explicitly adds the types to the global Jest namespace
+declare global {
+  namespace jest {
+    interface Matchers<R> {
+      toBeInTheDocument(): R;
+      toHaveTextContent(text: string | RegExp): R;
+      toBeVisible(): R;
+      // Add other matchers as needed
+    }
+  }
+}
