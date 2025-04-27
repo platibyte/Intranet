@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from 'react';
 import { cn } from "@/lib/utils";
 import { useToast } from "@/hooks/use-toast";
@@ -44,7 +43,6 @@ const PhotoGallery: React.FC<PhotoGalleryProps> = ({
   const fetchPhotos = async () => {
     setLoading(true);
     try {
-      // If limit is set, use sample photos for compact display (like on homepage)
       if (limit && limit < 10) {
         const samplePhotos = [
           {
@@ -93,7 +91,6 @@ const PhotoGallery: React.FC<PhotoGalleryProps> = ({
         setPhotos(samplePhotos.slice(0, limit));
         setTotalPages(1);
       } else {
-        // Fetch real photos from backend with pagination
         const response = await fetch(`http://192.168.0.17:5000/api/photos?page=${page}&limit=${photosPerPage}`);
         
         if (!response.ok) {
@@ -102,10 +99,9 @@ const PhotoGallery: React.FC<PhotoGalleryProps> = ({
         
         const data = await response.json();
         
-        // Transform the data to match our Photo interface
         const transformedPhotos: Photo[] = data.photos.map((photo: any, index: number) => ({
           id: index + 1 + (page - 1) * photosPerPage,
-          src: `http://192.168.0.17:5000${photo.url}`,
+          src: `http://192.168.0.17:5000/photos/${encodeURIComponent(photo.filename)}`,
           title: photo.title || photo.filename,
           filename: photo.filename,
           description: photo.description || ''
@@ -130,7 +126,6 @@ const PhotoGallery: React.FC<PhotoGalleryProps> = ({
     fetchPhotos();
   }, [page, limit]);
   
-  // Handle page change
   const handlePageChange = (newPage: number) => {
     if (newPage < 1 || newPage > totalPages) return;
     setPage(newPage);
@@ -139,37 +134,31 @@ const PhotoGallery: React.FC<PhotoGalleryProps> = ({
     }
   };
   
-  // Handle image load
   const handleImageLoad = (id: number) => {
     setLoadedImages(prev => [...prev, id]);
   };
 
-  // Open photo modal
   const openPhotoModal = (photo: Photo) => {
     setSelectedPhoto(photo);
     document.body.style.overflow = 'hidden';
   };
 
-  // Close photo modal
   const closePhotoModal = () => {
     setSelectedPhoto(null);
     document.body.style.overflow = 'auto';
   };
 
-  // Generate pagination items
   const renderPaginationItems = () => {
     const items = [];
-    const maxVisible = 5; // Maximum number of page numbers to show
+    const maxVisible = 5;
     
     let startPage = Math.max(1, page - Math.floor(maxVisible / 2));
     let endPage = Math.min(totalPages, startPage + maxVisible - 1);
     
-    // Adjust if we're near the end
     if (endPage - startPage + 1 < maxVisible) {
       startPage = Math.max(1, endPage - maxVisible + 1);
     }
     
-    // Show first page if not visible
     if (startPage > 1) {
       items.push(
         <PaginationItem key="first">
@@ -186,7 +175,6 @@ const PhotoGallery: React.FC<PhotoGalleryProps> = ({
       }
     }
     
-    // Show page numbers
     for (let i = startPage; i <= endPage; i++) {
       items.push(
         <PaginationItem key={i}>
@@ -197,7 +185,6 @@ const PhotoGallery: React.FC<PhotoGalleryProps> = ({
       );
     }
     
-    // Show last page if not visible
     if (endPage < totalPages) {
       if (endPage < totalPages - 1) {
         items.push(
@@ -309,7 +296,6 @@ const PhotoGallery: React.FC<PhotoGalleryProps> = ({
         </div>
       )}
 
-      {/* Photo Modal */}
       {selectedPhoto && (
         <div 
           className="fixed inset-0 z-50 bg-black/80 flex items-center justify-center p-4 animate-fade-in" 

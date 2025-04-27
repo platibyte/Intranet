@@ -1,4 +1,3 @@
-
 import { useState, useEffect } from 'react';
 import { PhotoInfo } from '@/components/photo/PhotoItem';
 import { useToast } from '@/hooks/use-toast';
@@ -30,33 +29,9 @@ export function useRandomPhotos() {
         const response = await fetch(`http://192.168.0.17:5000/api/random-photo${cacheBuster}`);
         
         if (response.ok) {
-          // Convert response to blob and create object URL
-          const blob = await response.blob();
-          const url = URL.createObjectURL(blob);
-          
-          // Extract filename from content-disposition header if available
-          const contentDisposition = response.headers.get('content-disposition');
-          let filename = '';
-          
-          if (contentDisposition) {
-            const filenameMatch = contentDisposition.match(/filename="(.+)"/);
-            if (filenameMatch && filenameMatch[1]) {
-              filename = filenameMatch[1];
-            }
-          }
-          
-          // If no filename found in header, try to extract from URL or generate a default one
-          if (!filename) {
-            // Try to get filename from the URL path
-            const urlPath = new URL(response.url).pathname;
-            const urlFilename = urlPath.split('/').pop();
-            
-            if (urlFilename) {
-              filename = urlFilename.split('?')[0]; // Remove query parameters
-            } else {
-              filename = `photo-${Date.now()}.jpg`; // Generate default filename
-            }
-          }
+          const data = await response.json();
+          const filename = data.filename;
+          const url = `http://192.168.0.17:5000/photos/${encodeURIComponent(filename)}`;
           
           return { url, filename };
         }
@@ -101,40 +76,13 @@ export function useRandomPhotos() {
         const response = await fetch(`http://192.168.0.17:5000/api/random-photo${cacheBuster}`);
         
         if (response.ok) {
-          // Convert response to blob and create object URL
-          const blob = await response.blob();
-          const url = URL.createObjectURL(blob);
-          
-          // Extract filename from content-disposition header if available
-          const contentDisposition = response.headers.get('content-disposition');
-          let filename = '';
-          
-          if (contentDisposition) {
-            const filenameMatch = contentDisposition.match(/filename="(.+)"/);
-            if (filenameMatch && filenameMatch[1]) {
-              filename = filenameMatch[1];
-            }
-          }
-          
-          // If no filename found in header, try to extract from URL or generate a default one
-          if (!filename) {
-            // Try to get filename from the URL path
-            const urlPath = new URL(response.url).pathname;
-            const urlFilename = urlPath.split('/').pop();
-            
-            if (urlFilename) {
-              filename = urlFilename.split('?')[0]; // Remove query parameters
-            } else {
-              filename = `photo-${Date.now()}.jpg`; // Generate default filename
-            }
-          }
+          const data = await response.json();
+          const filename = data.filename;
+          const url = `http://192.168.0.17:5000/photos/${encodeURIComponent(filename)}`;
           
           // Check if the new photo is unique (not already in the list)
           if (!photos.some(photo => photo.url === url)) {
             newPhotoInfo = { url, filename };
-          } else {
-            // Release object URL if photo is a duplicate
-            URL.revokeObjectURL(url);
           }
         }
         attempts++;

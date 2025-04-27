@@ -1,4 +1,3 @@
-
 import { useState } from 'react';
 import { Button } from "@/components/ui/button";
 import { RefreshCw } from 'lucide-react';
@@ -12,9 +11,7 @@ import { PhotoLoading } from "@/components/photo/PhotoLoading";
  * Allows users to view, refresh and hide specific photos
  */
 function RandomPhoto() {
-  // Use custom hook to fetch and manage photos
   const { photos, loading, handleHidePhoto, fetchRandomPhotos } = useRandomPhotos();
-  // State for the currently selected photo (for detailed view)
   const [selectedPhoto, setSelectedPhoto] = useState<PhotoInfo | null>(null);
 
   /**
@@ -37,10 +34,8 @@ function RandomPhoto() {
   return (
     <div className="space-y-4">
       {loading ? (
-        // Loading state - shows skeleton placeholders
         <PhotoLoading />
       ) : photos.length > 0 ? (
-        // Photos loaded - display the grid
         <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
           {photos.map((photo, index) => (
             <PhotoItem 
@@ -53,20 +48,16 @@ function RandomPhoto() {
           ))}
         </div>
       ) : (
-        // No photos - display error message
         <div className="aspect-video rounded-lg overflow-hidden bg-secondary/50 flex items-center justify-center text-muted-foreground">
           Konnte keine Fotos laden
         </div>
       )}
       
-      {/* Photo Modal - only shown when a photo is selected */}
       <PhotoModal photo={selectedPhoto} onClose={closePhotoModal} />
       
-      {/* Refresh button */}
       <div className="flex justify-end">
         <Button 
           onClick={() => {
-            // Clean up old object URLs before fetching new photos
             photos.forEach(photo => URL.revokeObjectURL(photo.url));
             fetchRandomPhotos();
           }} 
