@@ -3,6 +3,8 @@ import { useState, useEffect } from 'react';
 import { PhotoInfo } from '@/components/photo/PhotoItem';
 import { useToast } from '@/hooks/use-toast';
 
+const API_BASE_URL = 'http://192.168.0.17:5000';
+
 export function useRandomPhotos() {
   const [photos, setPhotos] = useState<PhotoInfo[]>([]);
   const [loading, setLoading] = useState(true);
@@ -14,11 +16,11 @@ export function useRandomPhotos() {
     try {
       const fetchPromises = Array(4).fill(0).map(async () => {
         const cacheBuster = `?nocache=${Date.now()}-${Math.random()}`;
-        const response = await fetch(`http://192.168.0.17:5000/api/random-photo${cacheBuster}`);
+        const response = await fetch(`${API_BASE_URL}/api/random-photo${cacheBuster}`);
         
         if (response.ok) {
           const data = await response.json();
-          const url = `http://192.168.0.17:5000/photos/${encodeURIComponent(data.filename)}`;
+          const url = `${API_BASE_URL}/photos/${encodeURIComponent(data.filename)}`;
           return { url, filename: data.filename };
         }
         return null;
@@ -48,11 +50,11 @@ export function useRandomPhotos() {
       
       while (!newPhotoInfo && attempts < 5) {
         const cacheBuster = `?nocache=${Date.now()}-${Math.random()}`;
-        const response = await fetch(`http://192.168.0.17:5000/api/random-photo${cacheBuster}`);
+        const response = await fetch(`${API_BASE_URL}/api/random-photo${cacheBuster}`);
         
         if (response.ok) {
           const data = await response.json();
-          const url = `http://192.168.0.17:5000/photos/${encodeURIComponent(data.filename)}`;
+          const url = `${API_BASE_URL}/photos/${encodeURIComponent(data.filename)}`;
           
           if (!photos.some(photo => photo.url === url)) {
             newPhotoInfo = { url, filename: data.filename };

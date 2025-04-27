@@ -1,3 +1,4 @@
+
 import React, { useState, useEffect } from 'react';
 import { cn } from "@/lib/utils";
 import { useToast } from "@/hooks/use-toast";
@@ -9,6 +10,8 @@ import {
   PaginationNext,
   PaginationPrevious,
 } from "@/components/ui/pagination";
+
+const API_BASE_URL = 'http://192.168.0.17:5000';
 
 interface Photo {
   id: number;
@@ -91,7 +94,7 @@ const PhotoGallery: React.FC<PhotoGalleryProps> = ({
         setPhotos(samplePhotos.slice(0, limit));
         setTotalPages(1);
       } else {
-        const response = await fetch(`http://192.168.0.17:5000/api/photos?page=${page}&limit=${photosPerPage}`);
+        const response = await fetch(`${API_BASE_URL}/api/photos?page=${page}&limit=${photosPerPage}`);
         
         if (!response.ok) {
           throw new Error('Fehler beim Laden der Fotos');
@@ -101,7 +104,7 @@ const PhotoGallery: React.FC<PhotoGalleryProps> = ({
         
         const transformedPhotos: Photo[] = data.photos.map((photo: any, index: number) => ({
           id: index + 1 + (page - 1) * photosPerPage,
-          src: `http://192.168.0.17:5000/photos/${encodeURIComponent(photo.filename)}`,
+          src: `${API_BASE_URL}/photos/${encodeURIComponent(photo.filename)}`,
           title: photo.title || photo.filename,
           filename: photo.filename,
           description: photo.description || ''
