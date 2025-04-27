@@ -20,8 +20,10 @@ export function useRandomPhotos() {
         
         if (response.ok) {
           const data = await response.json();
-          const url = `${API_BASE_URL}/photos/${encodeURIComponent(data.filename)}`;
-          return { url, filename: data.filename };
+          return { 
+            url: `${API_BASE_URL}/photos/${encodeURIComponent(data.filename)}`,
+            filename: data.filename
+          };
         }
         return null;
       });
